@@ -3,7 +3,7 @@
 With this package, you can query dom tree with xpath and regex(regular expression).
 
 With xpath, we already can query dom but cannot use regex.
-You may want to query dom which attribute(like `class`, `href`) match a regex(like `/bo.+k/`, `/(fa[vb]olite)/`).
+You may want to query dom which attribute(like `class`, `href`) match a regex(like `/bo.+k/`, `/(fa[vb]o[rl]ite)/`).
 
 You can do it. like:
 
@@ -19,34 +19,7 @@ elements.forEach((element)=>{
 
 ## Start with unpkg
 
-```html
-<html>
-  <head>
-    <script src='https://unpkg.com/rexpath@1.0.10/dist/index-web.js'></script>
-    <script>
-      window.onload = (event) => {
-        console.log("window on load start. -----");
-        const as = document.rexpath_all(['and', '//a', ['~', '\\d+']]);
-        as.forEach(a=>{ console.log(`found a. href:${a.href} text:${a.text}.`) });
-        
-        const a1 = document.rexpath(['and', '//a', ['~', 'pine']]);
-        console.log("a1 must be found.:", a1);
-        const a2 = document.rexpath(['and', '//a', ['~', 'pine', true]]);
-        console.log("a2 must be undef.:", a2);
-      };
-    </script>
-  </head>
-  <body>
-    <ul>
-      <li><a href='/apple-200'>Apple 200</a></li>
-      <li><a href='/orange-300'>Orange 300</a></li>
-      <li><a href='/pine-400'>Pine 400</a></li>
-      <li><a href='/knife'>Knife</a></li>
-    </ul>
-  </body>
-</html>
-
-```
+[oen file example.](https://unpkg.com/rexpath/example/unpkg.html)
 
 ## Start with webpack.
 
@@ -70,6 +43,14 @@ function find_it() {
     var a = div.rexpath( ["and", ".//a", ["~", "cool.+title"]] );                                                    
     return a;
 }
+```
+
+## Start (or try) with chrome devtools console.
+
+```js
+const element_script = document.createElement('script');
+element_script.src = 'https://unpkg.com/rexpath@1.0.10/dist/index-web.js';
+document.head.appendChild(element_script);
 ```
 
 ## API

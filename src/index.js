@@ -14,15 +14,34 @@ rexpath.init = function() {
     }
     return ar;
   };
-  HTMLElement.prototype.xpath = HTMLDocument.prototype.xpath;
-  HTMLElement.prototype.xpath_all = HTMLDocument.prototype.xpath_all;
+  /* inject rexpath to element */
+  HTMLDocument.prototype.rexpath = function(q) {
+    var from_node = this;
+    return rexpath.rexpath_internal(q, from_node, false);
+  };
+  HTMLDocument.prototype.rexpath_all = function(q) {
+    var from_node = this;
+    return rexpath.rexpath_internal(q, from_node, true);
+  };
+  // /* top level continuation */
+  // HTMLDocument.rexpath_return = function(node, env) {
+  //   if (!env.allp && env.foundp) { return; }
+  //   env.foundp = true;
+  //   env.found = env.found || new Map;
+  //   env.found.set(node, true);
+  // };
+
+  // Sync method from html-document to html-element.
+  ['xpath', 'xpath_all', 'rexpath', 'rexpath_all'].forEach(method=>{
+    HTMLElement.prototype[method] = HTMLDocument.prototype[method];
+  });
 
   /* compiler */
-  Function.prototype.rexpath_compile = function (cont) {
+  Function.prototype.rexpath_compile = function (cont=rexpath.rexpath_return) {
     // already compiled function.
     return this;
   };
-  String.prototype.rexpath_compile = function (cont) {
+  String.prototype.rexpath_compile = function (cont=rexpath.rexpath_return) {
     // string is xpath.
     var q = this;
     return function(node, env) {
@@ -36,7 +55,7 @@ rexpath.init = function() {
       }
     }
   };
-  Array.prototype.rexpath_compile = function (cont){
+  Array.prototype.rexpath_compile = function (cont=rexpath.rexpath_return){
     // array(list) is dispatched with head.
     var q = this;
     var head = q[0];
@@ -54,16 +73,6 @@ rexpath.init = function() {
       return rexpath.rexpath_compile_or(q, cont);
     }
   };
-
-  /* inject rexpath to element */
-  HTMLDocument.prototype.rexpath = function(q) {
-    var from_node = this;
-    return rexpath.rexpath_internal(q, from_node, false);
-  };
-  HTMLDocument.prototype.rexpath_all = function(q) {
-    var from_node = this;
-    return rexpath.rexpath_internal(q, from_node, true);
-  }
 };
 
 /* top level continuation */

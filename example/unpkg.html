@@ -1,16 +1,36 @@
 <html>
   <head>
-    <script src='https://unpkg.com/rexpath@1.0.10/dist/index-web.js'></script>
+    <!-- script src='https://unpkg.com/rexpath@1.0.8/dist/index-web.js'></script -->
+    <script src='../dist/index-web.js'></script>
     <script>
       window.onload = (event) => {
         console.log("window on load start. -----");
+        // query a tag elements which text() match digit.
         const as = document.rexpath_all(['and', '//a', ['~', '\\d+']]);
-        as.forEach(a=>{ console.log(`found a. href:${a.href} text:${a.text}.`) });
-        
+        as.forEach(a=>{
+          console.log(`found a. href:${a.href} text:${a.text}.`)
+          a.insertBefore(document.createTextNode("hi:"), a.firstChild);
+        });
+
         const a1 = document.rexpath(['and', '//a', ['~', 'pine']]);
+        // query with case insensitive regex. (default is case insensitive)
         console.log("a1 must be found.:", a1);
+        // query with case sensitive regex.
         const a2 = document.rexpath(['and', '//a', ['~', 'pine', true]]);
         console.log("a2 must be undef.:", a2);
+
+        // pre compiled query.
+        const compiled_q = ['and', '//a', ['@~', 'href', '\\d+']].rexpath_compile();
+
+        console.log('---------- first time');
+        document.rexpath_all(compiled_q).forEach( a=>{
+          console.log(a);
+        });
+
+        console.log('---------- second time. reuse compiled query.');
+        document.rexpath_all(compiled_q).forEach( a=>{
+          console.log(a);
+        });
       };
     </script>
   </head>
