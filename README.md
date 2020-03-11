@@ -7,7 +7,7 @@ You may want to query dom which attribute(like `class`, `href`) match a regex(li
 
 You can do it. like:
 
-```
+```js
 var elements = document.rexpath_all( ['and', '//div', ['or', ['@~', 'class', '(cool|awesome)-cafe'], ['@~', 'id', 'number-~d+']]] );
 elements.forEach((element)=>{
   /* a tag which text() matches /hotel/ */
@@ -18,7 +18,7 @@ elements.forEach((element)=>{
 
 ## Start with unpkg
 
-```
+```html
 <html>
   <head>
     <script src='https://unpkg.com/rexpath@1.0.8/dist/index-web.js'></script>
@@ -45,13 +45,13 @@ elements.forEach((element)=>{
 
 Install.
 
-```
+```sh
 $ npm install rexpath
 ```
 
 Use this like.
 
-```
+```js
 import rexpath from 'rexpath';
 rexpath.init(); /* inject method to HTMLElement, HTMLDocument. */
 
@@ -79,7 +79,7 @@ Find all elements.
 
 definition.
 
-```
+```text
 query = string | list
 list = and-clause | or-clause | attribute-match-clause | text-match-clause
 and-clause = ["and", query,,,]
@@ -90,7 +90,7 @@ text-match-clause = ["~", regex]
 
 meaning.
 
-```
+```text
 string : xpath. like "//div", ".//a[ contains(text(), 'aaa') ]"
 and-clause : query `and` mached dom. like ["and", "//div", ["~", "this .+ is awesome"]]
 or-clause : query `or` mached dom. like ["or", ["@~", "class", "red|blue"], ["@~", "id", "red|blue"]]
@@ -103,13 +103,13 @@ regex: string. regular expression.
 
 ### Compose xpath.
 
-```
+```js
 document.rexpath( ['and', '//div[ @class="test" ]', ['or', "./span", "./table"], './/a'] );
 ```
 
 ### RegEx
 
-```
+```js
 // attribute match
 document.rexpath( ['and', '//*', ['@~', 'class', '(novel|music|movie)']] );
 
