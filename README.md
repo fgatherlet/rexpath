@@ -28,15 +28,20 @@ elements.forEach((element)=>{
         console.log("window on load start. -----");
         const as = document.rexpath_all(['and', '//a', ['~', '\\d+']]);
         as.forEach(a=>{ console.log(`found a. href:${a.href} text:${a.text}.`) });
+        
+        const a1 = document.rexpath(['and', '//a', ['~', 'pine']]);
+        console.log("a1 must be found.:" a1);
+        const a2 = document.rexpath(['and', '//a', ['~', 'pine', true]]);
+        console.log("a2 must be undef.:" a2);
       };
     </script>
   </head>
   <body>
     <ul>
-      <li><a href='/apple-200'>apple 200</a></li>
-      <li><a href='/orange-300'>orange 300</a></li>
-      <li><a href='/pine-400'>pine 400</a></li>
-      <li><a href='/knife'>knife</a></li>
+      <li><a href='/apple-200'>Apple 200</a></li>
+      <li><a href='/orange-300'>Orange 300</a></li>
+      <li><a href='/pine-400'>Pine 400</a></li>
+      <li><a href='/knife'>Knife</a></li>
     </ul>
   </body>
 </html>
