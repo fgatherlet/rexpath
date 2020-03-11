@@ -22,7 +22,7 @@ elements.forEach((element)=>{
 ```html
 <html>
   <head>
-    <script src='https://unpkg.com/rexpath@1.0.8/dist/index-web.js'></script>
+    <script src='https://unpkg.com/rexpath@1.0.10/dist/index-web.js'></script>
     <script>
       window.onload = (event) => {
         console.log("window on load start. -----");
@@ -30,9 +30,9 @@ elements.forEach((element)=>{
         as.forEach(a=>{ console.log(`found a. href:${a.href} text:${a.text}.`) });
         
         const a1 = document.rexpath(['and', '//a', ['~', 'pine']]);
-        console.log("a1 must be found.:" a1);
+        console.log("a1 must be found.:", a1);
         const a2 = document.rexpath(['and', '//a', ['~', 'pine', true]]);
-        console.log("a2 must be undef.:" a2);
+        console.log("a2 must be undef.:", a2);
       };
     </script>
   </head>
@@ -45,6 +45,7 @@ elements.forEach((element)=>{
     </ul>
   </body>
 </html>
+
 ```
 
 ## Start with webpack.
