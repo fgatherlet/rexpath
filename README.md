@@ -19,7 +19,7 @@ elements.forEach((element)=>{
 
 ## Start with unpkg
 
-[oen file example.](https://unpkg.com/rexpath/example/unpkg.html)
+[one file example.](https://unpkg.com/rexpath/example/unpkg.html)
 
 ## Start with webpack.
 
