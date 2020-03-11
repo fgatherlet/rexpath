@@ -9,7 +9,9 @@ You can do it. like:
 
 ```js
 /* all div which class match /(cool|awesome)-cafe/ or id match /number-\\d+/ */
-var elements = document.rexpath_all( ['and', '//div', ['or', ['@~', 'class', '(cool|awesome)-cafe'], ['@~', 'id', 'number-\\d+']]] );
+var elements = document.rexpath_all(
+  ['and', '//div', ['or', ['@~', 'class', '(cool|awesome)-cafe']
+                        , ['@~', 'id', 'number-\\d+']]] );
 elements.forEach((element)=>{
   /* a tag which text() matches /hotel/ */
   var a = element.rexpath( ['and', './/a', ['~', 'hotel']]);
@@ -37,8 +39,10 @@ rexpath.init(); /* inject method to HTMLElement, HTMLDocument. */
 
 function find_it() {
     /* all div which `class` match awesome-.. or `id` match awesome */
-    var div = document.rexpath( ["and", "//div", ["or", ["@~", "class", "awesome-[ck]lass"],
-                                                        ["@~", "id", "awesome"]]] );
+    var div = document.rexpath(
+      ["and", "//div"
+            , ["or", ["@~", "class", "awesome-[ck]lass"],
+                     ["@~", "id", "awesome"]]] );
     /* all a-tag children of div. which text() match cool... */ 
     var a = div.rexpath( ["and", ".//a", ["~", "cool.+title"]] );                                                    
     return a;
@@ -92,17 +96,21 @@ regex: string. regular expression.
 ### Compose xpath.
 
 ```js
-document.rexpath( ['and', '//div[ @class="test" ]', ['or', "./span", "./table"], './/a'] );
+document.rexpath( ['and', '//div[ @class="test" ]'
+                        , ['or', "./span", "./table"]
+                        , './/a'] );
 ```
 
 ### RegEx
 
 ```js
 // attribute match
-document.rexpath( ['and', '//*', ['@~', 'class', '(novel|music|movie)']] );
+document.rexpath(
+  ['and', '//*', ['@~', 'class', '(novel|music|movie)']]);
 
 // text() match
-document.rexpath_all( ['and', '//a', ['~', 'social\\s+network\\s+\\d+']] );
+document.rexpath_all(
+  ['and', '//a', ['~', 'social\\s+network\\s+\\d+']] );
 ```
 
 
