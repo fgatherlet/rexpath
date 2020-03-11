@@ -10,6 +10,7 @@ You can do it. like:
 ```
 var elements = document.rexpath_all( ['and', '//div', ['or', ['@~', 'class', '(cool|awesome)-cafe'], ['@~', 'id', 'number-~d+']]] );
 elements.forEach((element)=>{
+  /* a tag which text() matches /hotel/ */
   var a = element.rexpath( ['and', './/a', ['~', 'hotel']]);
   console.log('find a tag:', a);
 }
@@ -55,8 +56,10 @@ import rexpath from 'rexpath';
 rexpath.init(); /* inject method to HTMLElement, HTMLDocument. */
 
 function find_it() {
+    /* all div which `class` match awesome-.. or `id` match awesome */
     var div = document.rexpath( ["and", "//div", ["or", ["@~", "class", "awesome-[ck]lass"],
                                                         ["@~", "id", "awesome"]]] );
+    /* all a-tag children of div. which text() match cool... */ 
     var a = div.rexpath( ["and", ".//a", ["~", "cool.+title"]] );                                                    
     return a;
 }
