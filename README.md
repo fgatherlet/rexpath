@@ -8,7 +8,8 @@ You may want to query dom which attribute(like `class`, `href`) match a regex(li
 You can do it. like:
 
 ```js
-var elements = document.rexpath_all( ['and', '//div', ['or', ['@~', 'class', '(cool|awesome)-cafe'], ['@~', 'id', 'number-~d+']]] );
+/* all div which class match /(cool|awesome)-cafe/ or id match /number-\\d+/ */
+var elements = document.rexpath_all( ['and', '//div', ['or', ['@~', 'class', '(cool|awesome)-cafe'], ['@~', 'id', 'number-\\d+']]] );
 elements.forEach((element)=>{
   /* a tag which text() matches /hotel/ */
   var a = element.rexpath( ['and', './/a', ['~', 'hotel']]);
