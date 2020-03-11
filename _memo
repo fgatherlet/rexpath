@@ -1,0 +1,11 @@
+/* test
+var result
+
+result = document.xpath('//a[ contains(@href, "book") ]').rexpath( ['@~', 'href', 'b.+k'], document.xpath('//a[ contains(@href, "book") ] ') );
+result = document.rexpath( ['and', '//a', ['@~', 'href', 'b.+k']] );
+result = document.rexpath( ['and', '//a', ['@~', 'href', 'au.+r']] );
+result = document.rexpath_all( ['or'
+                                ,['and', '//a', ['@~', 'href', 'au.+r']]
+                                ,['and', '//a', ['@~', 'href', 'bo.+k$']]
+                                ,] );
+ */
