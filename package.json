@@ -1,6 +1,6 @@
 {
   "name": "rexpath",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "A query language for DOM tree. You can use regular expression with xpath when querying DOM.",
   "main": "dist/index.js",
   "unpkg": "dist/index-web.js",
