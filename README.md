@@ -10,11 +10,11 @@ You can do it. like:
 ```js
 /* all div which class match /(cool|awesome)-cafe/ or id match /number-\\d+/ */
 var elements = document.rexpath_all(
-  ['and', '//div', ['or', ['@~', 'class', '(cool|awesome)-cafe']
-                        , ['@~', 'id', 'number-\\d+']]] );
+  ['and', '//div', ['or', ['@~', 'class', /(cool|awesome)-cafe/]
+                        , ['@~', 'id', /number-\d+/]]] );
 elements.forEach((element)=>{
   /* a tag which text() matches /hotel/ */
-  var a = element.rexpath( ['and', './/a', ['~', 'hotel']]);
+  var a = element.rexpath( ['and', './/a', ['~', /hotel/]]);
   console.log('find a tag:', a);
 }
 ```
@@ -41,10 +41,10 @@ function find_it() {
     /* all div which `class` match awesome-.. or `id` match awesome */
     var div = document.rexpath(
       ["and", "//div"
-            , ["or", ["@~", "class", "awesome-[ck]lass"],
-                     ["@~", "id", "awesome"]]] );
+            , ["or", ["@~", "class", /awesome-[ck]lass/],
+                     ["@~", "id", /awesome/]]] );
     /* all a-tag children of div. which text() match cool... */ 
-    var a = div.rexpath( ["and", ".//a", ["~", "cool.+title"]] );                                                    
+    var a = div.rexpath( ["and", ".//a", ["~", /cool.+title/]] );                                                    
     return a;
 }
 ```
@@ -53,7 +53,7 @@ function find_it() {
 
 ```js
 const element_script = document.createElement('script');
-element_script.src = 'https://unpkg.com/rexpath/dist/index-web.js';
+element_script.src = 'https://unpkg.com/rexpath';
 document.head.appendChild(element_script);
 ```
 
@@ -73,27 +73,53 @@ Compile query.
 
 ## Query
 
-definition.
+### definition.
 
-```text
-query = string | list
-list = and-clause | or-clause | attribute-match-clause | text-match-clause
-and-clause = ["and", query,,,]
-or-clause = ["or", query,,,]
-attribute-match-clause = ["@~", attribute, regex]
-text-match-clause = ["~", regex]
-```
+- query ::= xpath | clause
+- clause ::= and-clause | or-clause | attribute-match-clause | text-match-clause
+- and-clause ::= ["and", query,,,]
+- or-clause ::= ["or", query,,,]
+- attribute-match-clause ::= ["@~", attribute, regex]
+- text-match-clause ::= ["~", regex]
 
-meaning.
+### meaning.
 
-```text
-string : xpath. like "//div", ".//a[ contains(text(), 'aaa') ]"
-and-clause : query `and` mached dom. like ["and", "//div", ["~", "this .+ is awesome"]]
-or-clause : query `or` mached dom. like ["or", ["@~", "class", "red|blue"], ["@~", "id", "red|blue"]]
-attribute-match-clause : query dom which text match 
-attribute: string. attribute like "href", "class"
-regex: string. regular expression.
-```
+##### xpath
+
+xpath string. like
+
+- `"//div"`
+- `".//a[ contains(text(), 'aaa') ]"`
+
+##### and-clause
+query `and` mached dom. like
+
+- `["and", "//div", ["~", /this .+ is awesome/i]]`
+
+##### or-clause
+query `or` mached dom. like
+
+- `["or", ["@~", "class", /red|blue/],  ["@~", "id", /red|blue/]]`
+
+##### attribute-match-clause
+clause to query dom which attribute match regex.
+
+##### text-match-clause
+clause to query dom which textContent match regex.
+
+##### attribute
+string. attribute like
+
+- `"href"`
+- `"class"`
+
+##### regex
+RegExp object. like
+
+- `/hello\d+/`
+- `/world/i`
+- `RegExp("abc", "i")`
+
 
 ## Examples
 
@@ -110,11 +136,11 @@ document.rexpath( ['and', '//div[ @class="test" ]'
 ```js
 // attribute match
 document.rexpath(
-  ['and', '//*', ['@~', 'class', '(novel|music|movie)']]);
+  ['and', '//*', ['@~', 'class', /(novel|music|movie)/]]);
 
 // text() match
 document.rexpath_all(
-  ['and', '//a', ['~', 'social\\s+network\\s+\\d+']] );
+  ['and', '//a', ['~', /social\s+network\s+\d+/]] );
 ```
 
 

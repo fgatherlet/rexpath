@@ -35,11 +35,11 @@ test('test', t=>{
   ar_li_len = ar_li.length;
   t.equal(ar_li_len, 4);
 
-  ar_li = document.rexpath_all(['and', "//li", ["@~", "id", "2\\d+"]]);
+  ar_li = document.rexpath_all(['and', "//li", ["@~", "id", /2\d+/]]);
   ar_li_len = ar_li.length;
   t.equal(ar_li_len, 1);
 
-  ar_li = document.rexpath_all(['and', "//li", ["~", '2\\d+']]);
+  ar_li = document.rexpath_all(['and', "//li", ["~", /2\d+/]]);
   ar_li_len = ar_li.length;
   t.equal(ar_li_len, 1);
 

@@ -1,4 +1,4 @@
-const rexpath = {};
+var rexpath = {};
 
 rexpath.init = function(window) {
   /* for node.js unit test... there may be other proper way.. */
@@ -90,18 +90,18 @@ rexpath.rexpath_return = function(node, env) {
 };
 rexpath.rexpath_compile_regex_attribute = function(q, cont) {
   const attribute_key = q[1];
-  const regex = q[2];
-  const casesensitivep = q[3];
+  const regex = q[2]; /* RegExp Object. */
+  //const casesensitivep = q[3];
   if (!attribute_key || !regex) {
     throw 'rexpath_compile_regex_attribute accept blank input.';
   }
-  const regex2 = casesensitivep ? RegExp(regex) : RegExp(regex, "i");
+  //const regex2 = casesensitivep ? RegExp(regex) : RegExp(regex, "i");
 
   return function(node, env) {
     if (!env.allp && env.foundp) { return; }
     const attribute_value = node.getAttribute(attribute_key);
     if (!attribute_value) { return; }
-    const match = attribute_value.match(regex2);
+    const match = attribute_value.match(regex);
     if (match) {
       cont(node, env);
     }
@@ -109,17 +109,16 @@ rexpath.rexpath_compile_regex_attribute = function(q, cont) {
 };
 rexpath.rexpath_compile_regex_text = function(q, cont) {
   const regex = q[1];
-  const casesensitivep = q[2];
+  //const casesensitivep = q[2];
   if (!regex) {
     throw 'rexpath_compile_regex_text accept blank input.';
   }
-  const regex2 = casesensitivep ? RegExp(regex) : RegExp(regex, "i");
-
+  //const regex2 = casesensitivep ? RegExp(regex) : RegExp(regex, "i");
   return function(node, env) {
     if (!env.allp && env.foundp) { return; }
     const text_value = node.textContent;
     if (!text_value) { return; }
-    const match = text_value.match(regex2);
+    const match = text_value.match(regex);
     if (match) {
       cont(node, env);
     }
