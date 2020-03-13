@@ -86,11 +86,11 @@ Find all elements.
 
 Compile query.
 
-### `window.rexpath#use_css_selector()`
+### `window.rexpath.use_css_selector()`
 
 change to use css-selecrtor instead of xpath.
 
-### `window.rexpath#use_xpath()`
+### `window.rexpath.use_xpath()`
 
 back to use xpath instead of css-selector.
 
