@@ -1,6 +1,6 @@
 {
   "name": "rexpath",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "A query language for DOM tree. You can use regular expression with xpath when querying DOM.",
   "main": "dist/index.js",
   "unpkg": "dist/index-web.js",
@@ -9,9 +9,10 @@
     "url": "https://github.com/fgatherlet/rexpath.git"
   },
   "scripts": {
-    "test": "tape t/*.js",
-    "build": "webpack --config webpack.config.production.js",
-    "build-development": "webpack --config webpack.config.development.js"
+    "test": "tape t/*.js"
+    ,"build": "webpack --config webpack.config.production.js"
+    ,"build-development": "webpack --config webpack.config.development.js"
+    ,"all": "npm run build; npm run build-development; npm run test"
   },
   "keywords": [
     "xpath",

@@ -53,7 +53,7 @@ function find_it() {
 
 ```js
 const element_script = document.createElement('script');
-element_script.src = 'https://unpkg.com/rexpath@1.0.10/dist/index-web.js';
+element_script.src = 'https://unpkg.com/rexpath/dist/index-web.js';
 document.head.appendChild(element_script);
 ```
 
