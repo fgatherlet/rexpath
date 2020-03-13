@@ -35,7 +35,7 @@ Use this like.
 
 ```js
 import rexpath from 'rexpath';
-rexpath.init(); /* inject method to HTMLElement, HTMLDocument. */
+rexpath.init(window); /* inject method to HTMLElement, HTMLDocument. */
 
 function find_it() {
     /* all div which `class` match awesome-.. or `id` match awesome */
