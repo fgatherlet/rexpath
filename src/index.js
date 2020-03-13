@@ -1,6 +1,12 @@
 const rexpath = {};
 
-rexpath.init = function() {
+rexpath.init = function(window) {
+  /* for node.js unit test... there may be other proper way.. */
+  let document = window.document;
+  let HTMLDocument = window.HTMLDocument;
+  let HTMLElement = window.HTMLElement;
+  let XPathResult = window.XPathResult;
+
   /* inject xpath to element */
   HTMLDocument.prototype.xpath = function(q) {
     var xp = document.evaluate(q, this, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
@@ -111,7 +117,7 @@ rexpath.rexpath_compile_regex_text = function(q, cont) {
 
   return function(node, env) {
     if (!env.allp && env.foundp) { return; }
-    const text_value = node.text;
+    const text_value = node.textContent;
     if (!text_value) { return; }
     const match = text_value.match(regex2);
     if (match) {
@@ -148,7 +154,7 @@ rexpath.rexpath_internal = function(q, from_node, allp=false) {
   aout(from_node, env);
 
   if (! env.foundp) { return; }
-  var found_array = Array.from(env.found.keys());
+  var found_array = Array.from(env.found.keys()) || [];
 
   if (allp) {
     return found_array;
