@@ -2,7 +2,7 @@ const test = require('tape');
 const jsdom = require('jsdom');
 const JSDOM = jsdom.JSDOM;
 /* I do knot the proper way to handle module on node shoot... */
-const rexpath = require('../dist/index-node.js');
+const rexpath = require('../dist-development/index-node.js');
 //console.log("rexpath:", rexpath);
 
 const dom = new JSDOM(`
@@ -23,11 +23,13 @@ const dom = new JSDOM(`
 </html>
 `);
 const window = dom.window;
-rexpath.init(window);
-
 const document = window.document;
 
-test('test', t=>{
+rexpath.init(window);
+
+test('main', t=>{
+  rexpath.use_xpath();
+
   t.plan(4);
   let ar_li, ar_li_len;
 
@@ -49,6 +51,28 @@ test('test', t=>{
                                   ,".//li[@id='pine300']"
                                   ,".//li[@id='other']"]
                                 ,"./a"
+                               ]);
+  ar_li_len = ar_li.length;
+  t.equal(ar_li_len, 2);
+
+});
+
+test('css mode.', t=>{
+  rexpath.use_css_selector();
+
+  t.plan(2);
+  let ar_li, ar_li_len;
+
+  ar_li = document.rexpath_all("li");
+  ar_li_len = ar_li.length;
+  t.equal(ar_li_len, 4);
+
+  ar_li = document.rexpath_all(['and'
+                                ,"div"
+                                ,["or"
+                                  ,"li#pine300"
+                                  ,"li#other"]
+                                ,":scope > a"
                                ]);
   ar_li_len = ar_li.length;
   t.equal(ar_li_len, 2);

@@ -1,0 +1,47 @@
+<html>
+  <head>
+    <!-- script src='https://unpkg.com/rexpath'></script -->
+    <script src='../dist/index-web.js'></script>
+    <script>
+      window.onload = (event) => {
+        rexpath.use_css_selector();
+
+        console.log("window on load start. -----");
+        // query a tag elements which text() match digit.
+        const as = document.rexpath_all(['and', 'a', ['~', /\d+/]]);
+        as.forEach(a=>{
+          console.log(`found a. href:${a.href} text:${a.text}.`)
+          a.insertBefore(document.createTextNode("hi:"), a.firstChild);
+        });
+
+        const a1 = document.rexpath(['and', 'a', ['~', /pine/i]]);
+        // query with case insensitive regex.
+        console.log("a1 must be found.:", a1);
+        // query with case sensitive regex.
+        const a2 = document.rexpath(['and', 'a', ['~', /pine/]]);
+        console.log("a2 must be undef.:", a2);
+
+        // pre compiled query.
+        const compiled_q = ['and', 'a', ['@~', 'href', /\d+/]].rexpath_compile();
+
+        console.log('---------- first time');
+        document.rexpath_all(compiled_q).forEach( a=>{
+          console.log(a);
+        });
+
+        console.log('---------- second time. reuse compiled query.');
+        document.rexpath_all(compiled_q).forEach( a=>{
+          console.log(a);
+        });
+      };
+    </script>
+  </head>
+  <body>
+    <ul>
+      <li><a href='/apple-200'>Apple 200</a></li>
+      <li><a href='/orange-300'>Orange 300</a></li>
+      <li><a href='/pine-400'>Pine 400</a></li>
+      <li><a href='/knife'>Knife</a></li>
+    </ul>
+  </body>
+</html>

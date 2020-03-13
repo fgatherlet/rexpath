@@ -1,25 +1,36 @@
 var rexpath = {};
 
-rexpath.init = function(window) {
+rexpath.init = function(window/*, conf={mode: "xpath"}*/) {
+  /* inject global `rexpath`. may be bad manner. */
+  window.rexpath = rexpath;
   /* for node.js unit test... there may be other proper way.. */
-  let document = window.document;
-  let HTMLDocument = window.HTMLDocument;
-  let HTMLElement = window.HTMLElement;
-  let XPathResult = window.XPathResult;
+  rexpath.window = window;
+  var document = rexpath.window.document;
+  var HTMLDocument = rexpath.window.HTMLDocument;
+  var HTMLElement = rexpath.window.HTMLElement;
+  var XPathResult = rexpath.window.XPathResult;
 
-  /* inject xpath to element */
-  HTMLDocument.prototype.xpath = function(q) {
-    var xp = document.evaluate(q, this, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
-    return xp.singleNodeValue;
-  };
-  HTMLDocument.prototype.xpath_all = function(q) {
-    var xp = document.evaluate(q, this, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-    var ar = new Array(xp.snapshotLength);
-    for (var i=0; i<xp.snapshotLength; i++) {
-      ar[i] = xp.snapshotItem(i);
-    }
-    return ar;
-  };
+  ///* inject xpath to element */
+  //HTMLDocument.prototype.rexpath_raw_find_all = function(q) {
+  //  var xp = document.evaluate(q, this, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+  //  var ar = new Array(xp.snapshotLength);
+  //  for (var i=0; i<xp.snapshotLength; i++) {
+  //    ar[i] = xp.snapshotItem(i);
+  //  }
+  //  return ar;
+  //};
+  // if (conf.mode == 'css') {
+  //   HTMLDocument.prototype.rexpath_raw_find_all = function(q) {
+  //     var self = this;
+  //     try {
+  //       var ar = self.querySelectorAll(q) || [];
+  //       return ar;
+  //     } catch (e) {
+  //       console.log(`querySelectorAll error. self:${self} e:${e}`);
+  //       return [];
+  //     }
+  //   };
+  // }
   /* inject rexpath to element */
   HTMLDocument.prototype.rexpath = function(q) {
     var from_node = this;
@@ -29,18 +40,12 @@ rexpath.init = function(window) {
     var from_node = this;
     return rexpath.rexpath_internal(q, from_node, true);
   };
-  // /* top level continuation */
-  // HTMLDocument.rexpath_return = function(node, env) {
-  //   if (!env.allp && env.foundp) { return; }
-  //   env.foundp = true;
-  //   env.found = env.found || new Map;
-  //   env.found.set(node, true);
-  // };
-
   // Sync method from html-document to html-element.
-  ['xpath', 'xpath_all', 'rexpath', 'rexpath_all'].forEach(method=>{
-    HTMLElement.prototype[method] = HTMLDocument.prototype[method];
-  });
+  ['rexpath_raw_find_all'
+   ,'rexpath'
+   ,'rexpath_all'].forEach(method=>{
+      HTMLElement.prototype[method] = HTMLDocument.prototype[method];
+    });
 
   /* compiler */
   Function.prototype.rexpath_compile = function (cont=rexpath.rexpath_return) {
@@ -52,14 +57,13 @@ rexpath.init = function(window) {
     var q = this;
     return function(node, env) {
       if (!env.allp && env.foundp) { return; }
-      //var found = $ct.xpath_all(q, node);
-      var found = node.xpath_all(q);
+      var found = node.rexpath_raw_find_all(q);
       var found_len = found.length;
       for (var i=0; i<found_len; i++) {
         var xnode = found[i];
         cont(xnode, env);
       }
-    }
+    };
   };
   Array.prototype.rexpath_compile = function (cont=rexpath.rexpath_return){
     // array(list) is dispatched with head.
@@ -79,6 +83,44 @@ rexpath.init = function(window) {
       return rexpath.rexpath_compile_or(q, cont);
     }
   };
+  this.use_xpath();
+};
+
+rexpath.use_xpath = function() {
+  var document = rexpath.window.document;
+  var HTMLDocument = rexpath.window.HTMLDocument;
+  var HTMLElement = rexpath.window.HTMLElement;
+  var XPathResult = rexpath.window.XPathResult;
+
+  HTMLElement.prototype.rexpath_raw_find_all =
+    HTMLDocument.prototype.rexpath_raw_find_all =
+    function(q) {
+      var xp = document.evaluate(q, this, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+      var ar = new Array(xp.snapshotLength);
+      for (var i=0; i<xp.snapshotLength; i++) {
+        ar[i] = xp.snapshotItem(i);
+      }
+      return ar;
+    };
+};
+rexpath.use_css_selector = function() {
+  var document = rexpath.window.document;
+  var HTMLDocument = rexpath.window.HTMLDocument;
+  var HTMLElement = rexpath.window.HTMLElement;
+  var XPathResult = rexpath.window.XPathResult;
+
+  HTMLElement.prototype.rexpath_raw_find_all =
+    HTMLDocument.prototype.rexpath_raw_find_all =
+    function(q) {
+      var self = this;
+      try {
+        var ar = self.querySelectorAll(q) || [];
+        return ar;
+      } catch (e) {
+        console.log(`querySelectorAll error. self:${self} e:${e}`);
+        return [];
+      }
+    };
 };
 
 /* top level continuation */
@@ -105,7 +147,7 @@ rexpath.rexpath_compile_regex_attribute = function(q, cont) {
     if (match) {
       cont(node, env);
     }
-  }
+  };
 };
 rexpath.rexpath_compile_regex_text = function(q, cont) {
   const regex = q[1];
@@ -122,7 +164,7 @@ rexpath.rexpath_compile_regex_text = function(q, cont) {
     if (match) {
       cont(node, env);
     }
-  }
+  };
 };
 rexpath.rexpath_compile_and = function(q, cont) {
   let xcont = cont;
@@ -142,7 +184,7 @@ rexpath.rexpath_compile_or = function(q, cont) {
     for (var i = 0; i <= or_branch_len-1; i++) {
       (or_branch[i])(node, env);
     }
-  }
+  };
 };
 /* driver */
 rexpath.rexpath_internal = function(q, from_node, allp=false) {

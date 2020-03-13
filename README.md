@@ -1,8 +1,10 @@
-# Rexpath is xpath with regex.
+# Rexpath is xpath(or css-selector) with regex.
 
 With this package, you can query dom tree with xpath and regex(regular expression).
 
-With xpath, we already can query dom but cannot use regex.
+You can use **css-selector** instead of xpath, if you want.
+
+With xpath(or css-selector), we already can query dom but cannot use regex.!
 You may want to query dom which attribute(like `class`, `href`) match a regex(like `/bo.+k/`, `/(fa[vb]o[rl]ite)/`).
 
 You can do it. like:
@@ -19,9 +21,22 @@ elements.forEach((element)=>{
 }
 ```
 
+If you want to use css-selector instead of xpath.
+
+```js
+window.rexpath.use_css_selector();
+var element = document.rexpath(['and', 'div > span'
+                                     , ['or', ['and', 'table.some-class'
+                                                    , ['@~', 'id', /ban.n.\s+app.e/i]]
+                                            , 'div.some-class#some-id']
+                                     , 'a.book']);
+```
+
 ## Start with unpkg
 
-[one file example.](https://unpkg.com/rexpath/example/unpkg.html)
+- [one file example.](https://unpkg.com/rexpath/example/unpkg.html)
+
+- [one file exampl. css-selector version.](https://unpkg.com/rexpath/example/unpkg-css-selector.html)
 
 ## Start with webpack.
 
@@ -70,6 +85,14 @@ Find all elements.
 ### `(Array|String)#rexpath_compile()`
 
 Compile query.
+
+### `window.rexpath#use_css_selector()`
+
+change to use css-selecrtor instead of xpath.
+
+### `window.rexpath#use_xpath()`
+
+back to use xpath instead of css-selector.
 
 ## Query
 
@@ -121,6 +144,27 @@ RegExp object. like
 - `RegExp("abc", "i")`
 
 
+## You can use not `xpath` but `css-selector` if you want...
+
+`XPath` feels superior in my opinion. But you can use `css-selector`if you want.
+
+```
+import rexpath from 'rexpath';
+rexpath.init(winmdow);
+rexpath.use_css_selector();
+/* css-selector mode */
+document.rexpath(['or', "//div/a"
+                      , "//div/span/a"]);
+
+
+rexpath.use_xpath();
+/* back to xpath mode */
+document.rexpath(["or", ":scope > div > a"
+                      , ":scope > div > span > a "]);
+
+```
+
+
 ## Examples
 
 ### Compose xpath.
@@ -142,5 +186,7 @@ document.rexpath(
 document.rexpath_all(
   ['and', '//a', ['~', /social\s+network\s+\d+/]] );
 ```
+
+
 
 
