@@ -67,6 +67,10 @@ Find a element.
 
 Find all elements.
 
+### `(Array|String)#rexpath_compile()`
+
+Compile query.
+
 ## Query
 
 definition.
