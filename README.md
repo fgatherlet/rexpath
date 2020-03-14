@@ -4,7 +4,7 @@ With this package, you can query dom tree with xpath and regex(regular expressio
 
 You can use **css-selector** instead of xpath, if you want.
 
-With xpath(or css-selector), we already can query dom but cannot use regex.!
+With xpath(or css-selector), we already can query dom but cannot use regex.
 You may want to query dom which attribute(like `class`, `href`) match a regex(like `/bo.+k/`, `/(fa[vb]o[rl]ite)/`).
 
 You can do it. like:
@@ -36,7 +36,7 @@ var element = document.rexpath(['and', 'div > span'
 
 - [one file example.](https://unpkg.com/rexpath/example/unpkg.html)
 
-- [one file exampl. css-selector version.](https://unpkg.com/rexpath/example/unpkg-css-selector.html)
+- [one file example. css-selector version.](https://unpkg.com/rexpath/example/unpkg-css-selector.html)
 
 ## Start with webpack.
 
@@ -107,36 +107,36 @@ back to use xpath instead of css-selector.
 
 ### meaning.
 
-##### xpath
+#### xpath
 
 xpath string. like
 
 - `"//div"`
 - `".//a[ contains(text(), 'aaa') ]"`
 
-##### and-clause
+#### and-clause
 query `and` mached dom. like
 
 - `["and", "//div", ["~", /this .+ is awesome/i]]`
 
-##### or-clause
+#### or-clause
 query `or` mached dom. like
 
 - `["or", ["@~", "class", /red|blue/],  ["@~", "id", /red|blue/]]`
 
-##### attribute-match-clause
+#### attribute-match-clause
 clause to query dom which attribute match regex.
 
-##### text-match-clause
+#### text-match-clause
 clause to query dom which textContent match regex.
 
-##### attribute
+#### attribute
 string. attribute like
 
 - `"href"`
 - `"class"`
 
-##### regex
+#### regex
 RegExp object. like
 
 - `/hello\d+/`
@@ -186,7 +186,4 @@ document.rexpath(
 document.rexpath_all(
   ['and', '//a', ['~', /social\s+network\s+\d+/]] );
 ```
-
-
-
 
