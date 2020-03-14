@@ -10,28 +10,7 @@ rexpath.init = function(window/*, conf={mode: "xpath"}*/) {
   var HTMLElement = rexpath.window.HTMLElement;
   var XPathResult = rexpath.window.XPathResult;
 
-  ///* inject xpath to element */
-  //HTMLDocument.prototype.rexpath_raw_find_all = function(q) {
-  //  var xp = document.evaluate(q, this, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-  //  var ar = new Array(xp.snapshotLength);
-  //  for (var i=0; i<xp.snapshotLength; i++) {
-  //    ar[i] = xp.snapshotItem(i);
-  //  }
-  //  return ar;
-  //};
-  // if (conf.mode == 'css') {
-  //   HTMLDocument.prototype.rexpath_raw_find_all = function(q) {
-  //     var self = this;
-  //     try {
-  //       var ar = self.querySelectorAll(q) || [];
-  //       return ar;
-  //     } catch (e) {
-  //       console.log(`querySelectorAll error. self:${self} e:${e}`);
-  //       return [];
-  //     }
-  //   };
-  // }
-  /* inject rexpath to element */
+  /* -------------------- inject rexpath to element */
   HTMLDocument.prototype.rexpath = function(q) {
     var from_node = this;
     return rexpath.rexpath_internal(q, from_node, false);
@@ -47,7 +26,7 @@ rexpath.init = function(window/*, conf={mode: "xpath"}*/) {
       HTMLElement.prototype[method] = HTMLDocument.prototype[method];
     });
 
-  /* compiler */
+  /* -------------------- compiler */
   Function.prototype.rexpath_compile = function (cont=rexpath.rexpath_return) {
     // already compiled function.
     return this;
@@ -86,7 +65,7 @@ rexpath.init = function(window/*, conf={mode: "xpath"}*/) {
   this.use_xpath();
 };
 
-/* inject rexpat_raw_find_all. as xpath or querySelector */
+/* -------------------- inject rexpat_raw_find_all. as xpath or querySelector */
 rexpath.use_xpath = function() {
   var document = rexpath.window.document;
   var HTMLDocument = rexpath.window.HTMLDocument;
@@ -124,7 +103,7 @@ rexpath.use_css_selector = function() {
     };
 };
 
-/* top level continuation */
+/* -------------------- top level continuation */
 rexpath.rexpath_return = function(node, env) {
   if (!env.allp && env.foundp) { return; }
   env.foundp = true;
@@ -134,11 +113,9 @@ rexpath.rexpath_return = function(node, env) {
 rexpath.rexpath_compile_regex_attribute = function(q, cont) {
   const attribute_key = q[1];
   const regex = q[2]; /* RegExp Object. */
-  //const casesensitivep = q[3];
   if (!attribute_key || !regex) {
     throw 'rexpath_compile_regex_attribute accept blank input.';
   }
-  //const regex2 = casesensitivep ? RegExp(regex) : RegExp(regex, "i");
 
   return function(node, env) {
     if (!env.allp && env.foundp) { return; }
@@ -152,11 +129,10 @@ rexpath.rexpath_compile_regex_attribute = function(q, cont) {
 };
 rexpath.rexpath_compile_regex_text = function(q, cont) {
   const regex = q[1];
-  //const casesensitivep = q[2];
   if (!regex) {
     throw 'rexpath_compile_regex_text accept blank input.';
   }
-  //const regex2 = casesensitivep ? RegExp(regex) : RegExp(regex, "i");
+
   return function(node, env) {
     if (!env.allp && env.foundp) { return; }
     const text_value = node.textContent;
@@ -187,7 +163,8 @@ rexpath.rexpath_compile_or = function(q, cont) {
     }
   };
 };
-/* driver */
+
+/* -------------------- driver */
 rexpath.rexpath_internal = function(q, from_node, allp=false) {
   var aout = q.rexpath_compile(rexpath.rexpath_return);
   var env = {};
