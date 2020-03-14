@@ -1,7 +1,7 @@
 {
   "name": "rexpath",
   "version": "1.0.16",
-  "description": "A query language for DOM tree. You can use regular expression with xpath when querying DOM.",
+  "description": "A query language for DOM tree. You can use regular expression with xpath (or css-selector) when querying DOM.",
   "main": "dist/index.js",
   "unpkg": "dist/index-web.js",
   "repository": {
@@ -15,10 +15,12 @@
     ,"all": "npm run build; npm run build-development; npm run test"
   },
   "keywords": [
-    "xpath",
-    "regexp",
-    "regular-expression",
-    "dom"
+    "xpath"
+    ,"regexp"
+    ,"regular-expression"
+    ,"css"
+    ,"querySelector"
+    ,"dom"
   ],
   "author": "fgatherlet",
   "license": "MIT",

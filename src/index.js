@@ -86,6 +86,7 @@ rexpath.init = function(window/*, conf={mode: "xpath"}*/) {
   this.use_xpath();
 };
 
+/* inject rexpat_raw_find_all. as xpath or querySelector */
 rexpath.use_xpath = function() {
   var document = rexpath.window.document;
   var HTMLDocument = rexpath.window.HTMLDocument;
