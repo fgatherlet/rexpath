@@ -1,6 +1,6 @@
 var rexpath = {};
 
-rexpath.init = function(window/*, conf={mode: "xpath"}*/) {
+rexpath.init = function(window) {
   /* inject global `rexpath`. may be bad manner. */
   window.rexpath = rexpath;
   /* for node.js unit test... there may be other proper way.. */

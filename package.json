@@ -21,6 +21,8 @@
     ,"css"
     ,"querySelector"
     ,"dom"
+    ,"regex"
+    ,"selector"
   ],
   "author": "fgatherlet",
   "license": "MIT",
