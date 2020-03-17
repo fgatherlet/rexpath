@@ -10,7 +10,26 @@ You may want to query dom which attribute(like `class`, `href`) match a regex(li
 You can do it. like:
 
 ```js
-/* all div which class match /(cool|awesome)-cafe/ or id match /number-\\d+/ */
+var elements = document.rexpath_all(
+  ['and', '//a', ['@~', 'href', /google\.(com|co\.jp|it)/i ]]);
+elements.forEach(a=>{
+  console.log('href:', a.href);
+});
+```
+or:
+
+```js
+var elements = document.rexpath_all(
+  ['and', '//a', ['@~', 'class', /code-\d+/i ]]);
+elements.forEach(a=>{
+  console.log('href:', a.href);
+});
+```
+or:
+
+```js
+
+/* all div which class match /(cool|awesome)-cafe/ or id match /number-\d+/ */
 var elements = document.rexpath_all(
   ['and', '//div', ['or', ['@~', 'class', /(cool|awesome)-cafe/]
                         , ['@~', 'id', /number-\d+/]]] );
@@ -33,6 +52,14 @@ var element = document.rexpath(['and', 'div > span'
 ```
 
 ## Start with unpkg
+
+plance this.
+
+```
+<script src='https://unpkg.com/rexpath'></script>
+```
+
+examples.
 
 - [one file example.](https://unpkg.com/rexpath/example/unpkg.html)
 
